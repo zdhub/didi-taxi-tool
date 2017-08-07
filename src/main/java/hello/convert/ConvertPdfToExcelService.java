@@ -74,17 +74,12 @@ public class ConvertPdfToExcelService {
         workbook = buildExcel(didiSheetDTOList);
         logger.info("得到workbork{}",workbook.toString());
         return workbook;
-//        FileInputStream fileInputStream = new FileInputStream(workbook.toString());
-//        logger.info("得到fileInpuStream{}",fileInputStream);
-//        String filename = "D:\\公司\\交通费报销扆震东.xlsx";
-//        Files.copy(file.getInputStream(), rootLocation.resolve(filename), StandardCopyOption.REPLACE_EXISTING);
-
     }
 
     private HSSFWorkbook buildExcel(List<DidiSheetDTO> didiSheetDTOList) {
         HSSFWorkbook workbook = new HSSFWorkbook();
         HSSFSheet sheet = workbook.createSheet();
-        sheet.setDefaultColumnWidth(4000);
+        sheet.setDefaultColumnWidth(4);
         HSSFRow row = sheet.createRow(0);
         HSSFCell cell = row.createCell(0);
         cell.setCellValue("日期");

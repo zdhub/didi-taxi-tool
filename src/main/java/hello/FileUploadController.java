@@ -13,16 +13,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.text.ParseException;
-import java.util.logging.Logger;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -65,32 +66,18 @@ public class FileUploadController {
     }
 
     @PostMapping("/")
-    public String handlerFileUpload (@RequestParam("file") MultipartFile file, @RequestParam("name") String name,
-                                     @RequestParam("costTime") String costTime, HttpServletResponse resp,
-                                     RedirectAttributes redirectAttributes)throws IOException,ParseException {
-//        storageService.store(file);
+    public ModelAndView handlerFileUpload (@RequestParam("file") MultipartFile file, @RequestParam("name") String name,
+                                           @RequestParam("costTime") String costTime, HttpServletResponse response,
+                                           HttpServletRequest request)throws IOException,ParseException {
         HSSFWorkbook workbook = convertPdfToExcelService.store(file,name,costTime);
-        OutputStream outputStream = null;
-        outputStream = new FileOutputStream("D:\\公司\\交通费报销扆震东.xlsx");
-        workbook.write(outputStream);
-        /**
-        ByteArrayOutputStream os = null;
-        String excelName = java.net.URLEncoder.encode("滴滴车费单据","UTF-8");
-        resp.setContentType("application/msexcel;charset=GBK");
-        resp.setHeader("Content-Disposition", "attachment;filename=" + excelName + ".xls");
+        Map obj = null;
+        ViewExcel viewExcel = new ViewExcel();
         try {
-            os = new ByteArrayOutputStream();
-            workbook.write(os);
-            byte[] result = os.toByteArray();
-            return result;
-        } finally {
-            if (os != null) {
-                os.close();
-            }
+            viewExcel.buildExcelDocument(obj, workbook, request, response);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-         */
-//        redirectAttributes.addFlashAttribute("message","You successfully uploaded " + file.getOriginalFilename() + "!");
-        return  "redirect:/";
+        return new ModelAndView(viewExcel);
     }
 
     @ExceptionHandler(StorageFileNotFoundException.class)
