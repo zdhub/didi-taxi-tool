@@ -1,7 +1,7 @@
-package hello;
+package top.zander.didi;
 
-import hello.storage.StorageProperties;
-import hello.storage.StorageService;
+import top.zander.didi.storage.StorageProperties;
+import top.zander.didi.storage.StorageService;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;

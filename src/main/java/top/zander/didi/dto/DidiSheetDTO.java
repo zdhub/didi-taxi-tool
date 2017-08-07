@@ -1,4 +1,4 @@
-package hello.dto;
+package top.zander.didi.dto;
 
 import lombok.Getter;
 import lombok.Setter;

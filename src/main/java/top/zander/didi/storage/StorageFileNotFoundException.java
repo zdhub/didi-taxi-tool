@@ -1,6 +1,4 @@
-package hello.storage;
-
-import hello.storage.StorageException;
+package top.zander.didi.storage;
 
 /**
  * @Description:

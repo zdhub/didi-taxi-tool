@@ -1,4 +1,4 @@
-package hello.storage;
+package top.zander.didi.storage;
 
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.core.io.Resource;
