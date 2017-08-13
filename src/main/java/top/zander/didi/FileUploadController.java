@@ -1,6 +1,7 @@
 package top.zander.didi;
 
 import top.zander.didi.convert.ConvertPdfToExcelService;
+import top.zander.didi.dto.BaseResultDto;
 import top.zander.didi.storage.StorageFileNotFoundException;
 import top.zander.didi.storage.StorageService;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -63,9 +64,9 @@ public class FileUploadController {
     }
 
     @PostMapping("/")
-    public ModelAndView handlerFileUpload (@RequestParam("file") MultipartFile file, @RequestParam("name") String name,
-                                           @RequestParam("costTime") String costTime, HttpServletResponse response,
-                                           HttpServletRequest request)throws IOException,ParseException {
+    public BaseResultDto<ModelAndView> handlerFileUpload (@RequestParam("file") MultipartFile file, @RequestParam("name") String name,
+                                            @RequestParam("costTime") String costTime, HttpServletResponse response,
+                                            HttpServletRequest request)throws IOException,ParseException {
         HSSFWorkbook workbook = convertPdfToExcelService.store(file,name,costTime);
         Map obj = null;
         ViewExcel viewExcel = new ViewExcel();
@@ -74,7 +75,8 @@ public class FileUploadController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return new ModelAndView(viewExcel);
+//        ModelAndView modelAndView = new ModelAndView(viewExcel);
+        return new BaseResultDto<ModelAndView>(1,"测试",new ModelAndView(viewExcel));
     }
 
     @ExceptionHandler(StorageFileNotFoundException.class)
